@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meetingräume Buchung</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 100px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+        .time-slot {
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #ccc;
+            transition: transform 0.2s;
+        }
+        .time-slot:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #ccc;
+        }
+        .days {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .day {
+            margin: 5px;
+            text-align: center;
+        }
+        .booking-window {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            z-index: 1000;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        .visible {
+            display: block;
+        }
+        .btn {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="time-slots">
+            <!-- Zeit-Slots -->
+            <div class="time-slot" data-time="07:00">07:00</div>
+            <div class="time-slot" data-time="08:00">08:00</div>
+            <div class="time-slot" data-time="09:00">09:00</div>
+            <div class="time-slot" data-time="10:00">10:00</div>
+            <div class="time-slot" data-time="11:00">11:00</div>
+            <div class="time-slot" data-time="12:00">12:00</div>
+            <div class="time-slot" data-time="13:00">13:00</div>
+            <div class="time-slot" data-time="14:00">14:00</div>
+            <div class="time-slot" data-time="15:00">15:00</div>
+            <div class="time-slot" data-time="16:00">16:00</div>
+            <div class="time-slot" data-time="17:00">17:00</div>
+            <div class="time-slot" data-time="18:00">18:00</div>
+            <div class="time-slot" data-time="19:00">19:00</div>
+        </div>
+    </div>
+    
+    <div style="flex-grow: 1;">
+        <div class="header">
+            <div class="days">
+                <div class="day">08<br>Dienstag</div>
+                <div class="day">09<br>Mittwoch</div>
+                <div class="day">10<br>Donnerstag</div>
+                <div class="day">11<br>Freitag</div>
+            </div>
+            <div class="current-month" id="currentMonth">Oktober 2024</div>
+        </div>
+
+        <div class="overlay" id="overlay"></div>
+        <div class="booking-window" id="bookingWindow">
+            <h3>Buchungsdetails</h3>
+            <label>Titel:</label>
+            <input type="text" id="title" placeholder="Titel einfügen"><br>
+            <label>Teilnehmer:</label>
+            <input type="text" id="participants" placeholder="Teilnehmer hinzufügen"><br>
+            <label>Dauer:</label>
+            <select id="duration">
+                <option value="30">30 Minuten</option>
+                <option value="60">60 Minuten</option>
+                <option value="90">90 Minuten</option>
+            </select><br>
+            <label>Terminart:</label>
+            <select id="type">
+                <option value="internal">Intern</option>
+                <option value="external">Extern</option>
+            </select><br>
+            <label>Details:</label>
+            <textarea id="details" placeholder="Details zur Besprechung"></textarea><br>
+            <button class="btn" id="submitBtn">Buchen</button>
+            <button class="btn" id="closeBtn">Schließen</button>
+        </div>
+    </div>
+
+    <script>
+        const timeSlots = document.querySelectorAll('.time-slot');
+        const overlay = document.getElementById('overlay');
+        const bookingWindow = document.getElementById('bookingWindow');
+        const closeBtn = document.getElementById('closeBtn');
+
+        timeSlots.forEach(slot => {
+            slot.addEventListener('click', () => {
+                overlay.classList.add('visible');
+                bookingWindow.classList.add('visible');
+            });
+        });
+
+        closeBtn.addEventListener('click', () => {
+            overlay.classList.remove('visible');
+            bookingWindow.classList.remove('visible');
+        });
+    </script>
+</body>
+</html>
